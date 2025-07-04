@@ -61,7 +61,7 @@ class DataChatApp:
         .metric-card:hover { transform: translateY(-2px); }
         .stButton > button {
             background: linear-gradient(90deg, #667eea 0%, #764ba2 100%) !important;
-            color: white !important; border: none !important;
+            color: black !important; border: none !important;
             border-radius: 25px !important;
             padding: 0.5rem 2rem !important;
             transition: all 0.3s ease !important;
