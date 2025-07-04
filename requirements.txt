@@ -6,3 +6,4 @@ langchain
 langchain-experimental
 python-dotenv
 openpyxl
+tabulate
