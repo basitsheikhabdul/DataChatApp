@@ -349,7 +349,7 @@ class DataChatApp:
     
     def create_chat_agent(self, df: pd.DataFrame, model: str, temperature: float):
         """Create and configure the pandas dataframe agent"""
-        openai_api_key = os.getenv("OPENAI_API_KEY")
+        openai_api_key = st.secrets["OPENAI_API_KEY"]
         
         if not openai_api_key:
             st.error("🔑 OpenAI API key not found. Please set OPENAI_API_KEY in your environment variables.")
