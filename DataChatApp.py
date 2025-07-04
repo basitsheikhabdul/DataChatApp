@@ -263,59 +263,45 @@ class DataChatApp:
                 'Null Count': df.isnull().sum()
             })
             st.dataframe(dtype_df, use_container_width=True)
-    
-    def setup_sidebar(self, df: pd.DataFrame):
-        """Setup sidebar with additional options"""
-        st.sidebar.header("⚙️ Settings")
-        
-        # Model selection
-        model_options = {
-            "GPT-3.5 Turbo (Fast & Cheap)": "gpt-3.5-turbo",
-            "GPT-4 (More Accurate)": "gpt-4",
-            "GPT-4 Turbo": "gpt-4-turbo-preview"
-        }
-        
-        selected_model = st.sidebar.selectbox(
-            "🧠 Select AI Model",
-            options=list(model_options.keys()),
-            index=0
-        )
-        
-        # Temperature setting
-        temperature = st.sidebar.slider(
-            "🌡️ Response Creativity",
-            min_value=0.0,
-            max_value=1.0,
-            value=0.1,
-            step=0.1,
-            help="Higher values make responses more creative but less focused"
-        )
-        
-        # Quick insights
-        st.sidebar.header("💡 Quick Insights")
-        
-        if st.sidebar.button("📊 Generate Summary"):
-            self.generate_quick_summary(df)
-        
-        if st.sidebar.button("📈 Show Correlations"):
-            self.show_correlations(df)
-        
-        # Sample questions
-        st.sidebar.header("❓ Sample Questions")
-        sample_questions = [
-            "What are the key statistics of this dataset?",
-            "Show me the distribution of the main columns",
-            "Are there any missing values I should know about?",
-            "What correlations exist between numeric columns?",
-            "Can you identify any outliers in the data?"
-        ]
-        
-        for i, question in enumerate(sample_questions):
-            if st.sidebar.button(f"Q{i+1}: {question[:30]}...", key=f"sample_{i}"):
-                st.session_state.sample_question = question
-                st.rerun()  # Force rerun to process the sample question immediately
-        
-        return model_options[selected_model], temperature
+
+def setup_sidebar(self, df: pd.DataFrame):
+    """Setup sidebar with only temperature and insight options"""
+    st.sidebar.header("⚙️ Settings")
+
+    # Temperature setting
+    temperature = st.sidebar.slider(
+        "🌡️ Response Creativity",
+        min_value=0.0,
+        max_value=1.0,
+        value=0.1,
+        step=0.1,
+        help="Higher values make responses more creative but less focused"
+    )
+
+    # Quick insights
+    st.sidebar.header("💡 Quick Insights")
+    if st.sidebar.button("📊 Generate Summary"):
+        self.generate_quick_summary(df)
+    if st.sidebar.button("📈 Show Correlations"):
+        self.show_correlations(df)
+
+    # Sample questions
+    st.sidebar.header("❓ Sample Questions")
+    sample_questions = [
+        "What are the key statistics of this dataset?",
+        "Show me the distribution of the main columns",
+        "Are there any missing values I should know about?",
+        "What correlations exist between numeric columns?",
+        "Can you identify any outliers in the data?"
+    ]
+    for i, question in enumerate(sample_questions):
+        if st.sidebar.button(f"Q{i+1}: {question[:30]}...", key=f"sample_{i}"):
+            st.session_state.sample_question = question
+            st.rerun()
+
+    # Return fixed model and user-set temperature
+    return "gpt-3.5-turbo", temperature
+
     
     def generate_quick_summary(self, df: pd.DataFrame):
         """Generate quick data summary"""
