@@ -313,6 +313,7 @@ class DataChatApp:
         for i, question in enumerate(sample_questions):
             if st.sidebar.button(f"Q{i+1}: {question[:30]}...", key=f"sample_{i}"):
                 st.session_state.sample_question = question
+                st.rerun()  # Force rerun to process the sample question immediately
         
         return model_options[selected_model], temperature
     
@@ -431,10 +432,20 @@ class DataChatApp:
                     if 'chat_history' not in st.session_state:
                         st.session_state.chat_history = []
                     
-                    # Handle sample question
+                    # Handle user input - check for sample question first
+                    user_query = ""
                     if 'sample_question' in st.session_state:
                         user_query = st.session_state.sample_question
+                        # Clear the sample question after using it
                         del st.session_state.sample_question
+                        # Display the sample question in the text input
+                        st.text_input(
+                            "Ask a question about your data:",
+                            value=user_query,
+                            placeholder="e.g., What's the average of column X? Show me trends in the data...",
+                            key="user_input_display",
+                            disabled=True
+                        )
                     else:
                         user_query = st.text_input(
                             "Ask a question about your data:",
@@ -450,7 +461,8 @@ class DataChatApp:
                             st.session_state.chat_history = []
                             st.rerun()
                     
-                    if (submit_button or user_query) and user_query:
+                    # Process the query if there's input
+                    if user_query and (submit_button or 'sample_question' in st.session_state):
                         # Add user message to history
                         st.session_state.chat_history.append(("user", user_query))
                         
@@ -469,6 +481,11 @@ class DataChatApp:
                             except Exception as e:
                                 error_msg = f"Sorry, I encountered an error: {str(e)}"
                                 st.session_state.chat_history.append(("assistant", error_msg))
+                        
+                        # Clear the input after processing
+                        if 'user_input' in st.session_state:
+                            del st.session_state.user_input
+                        st.rerun()
                     
                     # Display chat history
                     if st.session_state.chat_history:
