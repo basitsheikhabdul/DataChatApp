@@ -5,3 +5,4 @@ openai
 langchain
 langchain-experimental
 python-dotenv
+openpyxl
