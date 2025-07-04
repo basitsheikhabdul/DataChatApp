@@ -23,45 +23,154 @@ class DataChatApp:
             page_title="DataChat Pro",
             page_icon="🤖",
             layout="wide",
-            initial_sidebar_state="expanded"
+            initial_sidebar_state="collapsed"
         )
 
     def setup_custom_css(self):
-        st.markdown("""<style>
-        .main-header { background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
-        padding: 2rem; border-radius: 10px; margin-bottom: 2rem;
-        text-align: center; color: white !important;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1);}
-        .main-header h1, .main-header p {color: white !important; margin: 0.5rem 0;}
-        .chat-message {padding: 1.5rem; border-radius: 15px; margin: 1rem 0;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.1); border: 1px solid rgba(0,0,0,0.05);}
-        .user-message {background: linear-gradient(135deg, #667eea, #764ba2); color: white !important; margin-left: 15%; border: none;}
-        .user-message strong {color: white !important;}
-        .bot-message {background: #f8f9fa; color: #212529 !important; border-left: 4px solid #667eea; margin-right: 15%;}
-        .bot-message strong {color: #495057 !important;}
-        .metric-card {background: linear-gradient(145deg, #ffffff, #f8f9fa);
-        padding: 1.5rem; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        text-align: center; margin: 1rem 0; border: 1px solid rgba(0,0,0,0.05);
-        transition: transform 0.2s ease;}
-        .metric-card:hover {transform: translateY(-2px);}
-        .metric-card h2, .metric-card h3 {color: #212529 !important;}
-        .stButton > button {background: linear-gradient(90deg, #667eea 0%, #764ba2 100%) !important;
-        color: white !important; border: none !important; border-radius: 25px !important;
-        padding: 0.5rem 2rem !important; transition: all 0.3s ease !important; font-weight: 500 !important;}
-        .stButton > button:hover {transform: translateY(-2px) !important;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.2) !important;
-        background: linear-gradient(90deg, #5a6fd8 0%, #6a4190 100%) !important;}
-        .css-1d391kg {background-color: #f8f9fa;}
-        .stMarkdown p, .stMarkdown div, .stText {color: #212529 !important;}
-        .stDataFrame {background: white; border-radius: 10px;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.05);}
-        .stTabs [data-baseweb="tab-list"] {gap: 8px;}
-        .stTabs [data-baseweb="tab"] {background-color: #f8f9fa; border-radius: 10px; color: #495057; padding: 0.5rem 1rem; border: 1px solid #dee2e6;}
-        .stTabs [aria-selected="true"] {background: linear-gradient(90deg, #667eea 0%, #764ba2 100%); color: white !important;}
-        .stSuccess {background-color: #d4edda !important; border: 1px solid #c3e6cb !important; color: #155724 !important;}
-        .stError {background-color: #f8d7da !important; border: 1px solid #f5c6cb !important; color: #721c24 !important;}
-        .stInfo {background-color: #d1ecf1 !important; border: 1px solid #bee5eb !important; color: #0c5460 !important;}
-        </style>""", unsafe_allow_html=True)
+        st.markdown("""
+        <style>
+        /* ------------------------ Main Header ------------------------ */
+        .main-header {
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            padding: 2rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            text-align: center;
+            color: white !important;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .main-header h1, .main-header p {
+            color: white !important;
+            margin: 0.5rem 0;
+        }
+
+        /* ------------------------ Chat Messages ------------------------ */
+        .chat-message {
+            padding: 1.5rem;
+            border-radius: 15px;
+            margin: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .user-message {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white !important;
+            margin-left: 15%;
+            border: none;
+        }
+
+        .user-message strong {
+            color: white !important;
+        }
+
+        .bot-message {
+            background: #f8f9fa;
+            color: #212529 !important;
+            border-left: 4px solid #667eea;
+            margin-right: 15%;
+        }
+
+        .bot-message strong {
+            color: #495057 !important;
+        }
+
+        /* ------------------------ Metric Cards ------------------------ */
+        .metric-card {
+            background: linear-gradient(145deg, #ffffff, #f8f9fa);
+            padding: 1.5rem;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            text-align: center;
+            margin: 1rem 0;
+            border: 1px solid rgba(0,0,0,0.05);
+            transition: transform 0.2s ease;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .metric-card h2, .metric-card h3 {
+            color: #212529 !important;
+        }
+
+        /* ------------------------ Buttons ------------------------ */
+        .stButton > button {
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%) !important;
+            color: white !important;
+            border: none !important;
+            border-radius: 25px !important;
+            padding: 0.5rem 2rem !important;
+            transition: all 0.3s ease !important;
+            font-weight: 500 !important;
+        }
+
+        .stButton > button:hover {
+            transform: translateY(-2px) !important;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2) !important;
+            background: linear-gradient(90deg, #5a6fd8 0%, #6a4190 100%) !important;
+        }
+
+        /* ------------------------ Sidebar ------------------------ */
+        .css-1d391kg {
+            background-color: #f8f9fa;
+        }
+
+        /* ------------------------ Text Elements ------------------------ */
+        .stMarkdown p,
+        .stMarkdown div,
+        .stText {
+            color: #212529 !important;
+        }
+
+        /* ------------------------ DataFrame Styling ------------------------ */
+        .stDataFrame {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        /* ------------------------ Tabs ------------------------ */
+        .stTabs [data-baseweb="tab-list"] {
+            gap: 8px;
+        }
+
+        .stTabs [data-baseweb="tab"] {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            color: #495057;
+            padding: 0.5rem 1rem;
+            border: 1px solid #dee2e6;
+        }
+
+        .stTabs [aria-selected="true"] {
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            color: white !important;
+        }
+
+        /* ------------------------ Alert Styles ------------------------ */
+        .stSuccess {
+            background-color: #d4edda !important;
+            border: 1px solid #c3e6cb !important;
+            color: #155724 !important;
+        }
+
+        .stError {
+            background-color: #f8d7da !important;
+            border: 1px solid #f5c6cb !important;
+            color: #721c24 !important;
+        }
+
+        .stInfo {
+            background-color: #d1ecf1 !important;
+            border: 1px solid #bee5eb !important;
+            color: #0c5460 !important;
+        }
+        </style>
+        """, unsafe_allow_html=True)
+
 
     def render_header(self):
         st.markdown("""
